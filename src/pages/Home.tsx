@@ -5,13 +5,41 @@ import Footer from '../components/Footer';
 import CategoryTabs, { Category } from '../components/CategoryTabs';
 import PostCard from '../components/PostCard';
 import { mockPosts } from '../mockData';
+import { Button } from '@/components/ui/button';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
+import { Filter } from 'lucide-react';
+
+type FilterOption = 'recent' | 'oldest' | 'mostLiked';
 
 const Home = () => {
   const [activeCategory, setActiveCategory] = useState<Category>('all');
+  const [filterOption, setFilterOption] = useState<FilterOption>('recent');
   
-  const filteredPosts = activeCategory === 'all' 
-    ? mockPosts 
-    : mockPosts.filter(post => post.category === activeCategory);
+  // Filter posts by category first
+  let filteredPosts = activeCategory === 'all' 
+    ? [...mockPosts] 
+    : [...mockPosts.filter(post => post.category === activeCategory)];
+
+  // Then apply sorting based on filter option
+  filteredPosts = filteredPosts.sort((a, b) => {
+    switch (filterOption) {
+      case 'recent':
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      case 'oldest':
+        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      case 'mostLiked':
+        return b.likes - a.likes;
+      default:
+        return 0;
+    }
+  });
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -26,10 +54,43 @@ const Home = () => {
             </p>
           </div>
           
-          <CategoryTabs 
-            activeCategory={activeCategory}
-            onCategoryChange={setActiveCategory}
-          />
+          <div className="flex justify-between items-center mb-6">
+            <CategoryTabs 
+              activeCategory={activeCategory}
+              onCategoryChange={setActiveCategory}
+            />
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="ml-2">
+                  <Filter className="mr-2 h-4 w-4" />
+                  Filter
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-40">
+                <DropdownMenuLabel>Sort by</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem 
+                  className={filterOption === 'recent' ? 'bg-muted' : ''}
+                  onClick={() => setFilterOption('recent')}
+                >
+                  Most recent
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  className={filterOption === 'oldest' ? 'bg-muted' : ''}
+                  onClick={() => setFilterOption('oldest')}
+                >
+                  Oldest first
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  className={filterOption === 'mostLiked' ? 'bg-muted' : ''}
+                  onClick={() => setFilterOption('mostLiked')}
+                >
+                  Most liked
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredPosts.map(post => (

@@ -37,9 +37,6 @@ const Navigation: React.FC = () => {
             <Link to="/" className="text-gray-700 hover:text-blog-primary">
               Home
             </Link>
-            <Link to="/categories" className="text-gray-700 hover:text-blog-primary">
-              Categories
-            </Link>
             <Link to="/new-post" className="text-gray-700 hover:text-blog-primary">
               New Post
             </Link>
@@ -100,13 +97,6 @@ const Navigation: React.FC = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Home
-              </Link>
-              <Link 
-                to="/categories" 
-                className="text-gray-700 hover:text-blog-primary py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Categories
               </Link>
               <Link 
                 to="/new-post" 

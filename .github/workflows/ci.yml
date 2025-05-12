@@ -1,4 +1,4 @@
-name: CI Workflow
+name: Node.js CI
 
 on:
   push:
@@ -9,56 +9,26 @@ on:
       - main
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the code from GitHub
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js version
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'  # Specify the Node.js version you want to use
 
-      # Step 3: Install project dependencies
-      - name: Install dependencies
-        run: npm install
+    - name: Install dependencies
+      run: npm install
 
-      # Step 4: Build the project (optional if needed)
-      - name: Build project
-        run: npm run build
+    - name: Run tests
+      run: npm test
 
-      # Step 5: Start the development server (on port 8000)
-      - name: Start dev server
-        run: npm run dev &
-        continue-on-error: true
-
-      # Step 6: Wait for server on port 8000 to be ready
-      - name: Wait for dev server to be ready
-        run: npx wait-on http://localhost:8000
-
-      # Step 7: Verify the dev server is running
-      - name: Verify the dev server is running
-        run: curl --head --silent http://localhost:8000 || exit 1
-
-      # Step 8: Upload build artifacts
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v3.1.3
-        with:
-          name: build-output
-          path: ./build
-
-      # Step 9: (Optional) Notify Slack
-      - name: Notify Slack
-        if: ${{ secrets.SLACK_WEBHOOK_URL != '' }}
-        uses: slackapi/slack-github-action@v1.24.0
-        with:
-          payload: |
-            {
-              "text": "✅ CI workflow completed successfully on branch ${{ github.ref_name }}."
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    - name: Upload test results (optional)
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: ./test-results

@@ -54,9 +54,9 @@ export default {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				blog: {
-					primary: '#3b82f6', // Blue shade
+					primary: '#3D316E', // Changed to blue color
 					secondary: '#f3f4f6', // Light gray
-					accent: '#10b981', // Green accent
+					accent: '#BE3033', // Changed to red accent
 				}
 			},
 			borderRadius: {

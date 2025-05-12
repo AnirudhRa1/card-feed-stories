@@ -28,16 +28,16 @@ const Navigation: React.FC = () => {
       <div className="blog-container py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="text-2xl font-bold text-blog-primary">
+          <Link to="/" className="text-2xl font-bold text-secondary">
             BlogApp
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            <Link to="/" className="text-gray-700 hover:text-blog-primary">
+            <Link to="/" className="text-gray-700 hover:text-secondary">
               Home
             </Link>
-            <Link to="/new-post" className="text-gray-700 hover:text-blog-primary">
+            <Link to="/new-post" className="text-gray-700 hover:text-secondary">
               New Post
             </Link>
             
@@ -93,14 +93,14 @@ const Navigation: React.FC = () => {
             <div className="flex flex-col space-y-3">
               <Link 
                 to="/" 
-                className="text-gray-700 hover:text-blog-primary py-2"
+                className="text-gray-700 hover:text-secondary py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Home
               </Link>
               <Link 
                 to="/new-post" 
-                className="text-gray-700 hover:text-blog-primary py-2"
+                className="text-gray-700 hover:text-secondary py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 New Post
@@ -109,7 +109,7 @@ const Navigation: React.FC = () => {
                 <>
                   <Link 
                     to="/profile" 
-                    className="text-gray-700 hover:text-blog-primary py-2"
+                    className="text-gray-700 hover:text-secondary py-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Profile
@@ -117,7 +117,7 @@ const Navigation: React.FC = () => {
                   {user.role === 'admin' || user.role === 'moderator' ? (
                     <Link 
                       to="/dashboard" 
-                      className="text-gray-700 hover:text-blog-primary py-2"
+                      className="text-gray-700 hover:text-secondary py-2"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Dashboard
